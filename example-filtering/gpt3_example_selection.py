@@ -88,14 +88,22 @@ def load_anno(dataset_fn, dataset_type):
     return answer_dict, question_dict
 
 
-def load_captions(caption_fn, key="prompt_guided_captions"):
+def load_captions(caption_fn, coco_key="coco_captions", prompt_key = "prompt_guided_captions"):
     with open(caption_fn) as f:
         caption_dataset = json.load(f)
     caption_dict = {}
+    
     for sample in caption_dataset:
         question_id, image_id = sample['question_id'], sample['image_id']
         context_key = f"{image_id}<->{question_id}"
-        captions = sample[key]
+        captions = sample[coco_key] 
+        prompt_captions =[c for c in sample[prompt_key] if c != ""]
+        prompt_captions = list(set(prompt_captions))
+        captions.extend(prompt_captions)
+        
+        # if want to reduce workload, can sample fewer captions here!
+        # e.g. captions = captions[:10]
+        
         caption_dict[context_key] = captions
     return caption_dict
 
@@ -134,15 +142,16 @@ class Example_selection:
             image_id = int(key.split('<->')[0])
             question_id = key.split('<->')[1]
 
-            chosen_captions, soft_score, hard_score = self.sample_inference(key)
+            captions, soft_scores, hard_scores = self.sample_inference(key)
 
             this_sample = { "question_id": question_id,
                             "image_id": image_id,
                             "question": question,
                             "answer": answer,
-                            "filtered_prompt_guided_captions": chosen_captions,
-                            "soft_score": soft_score,
-                            "hard_score": hard_score
+                            "coco_captions": captions[:5],
+                            "prompt_guided_captions": captions[5:],
+                            "soft_scores": soft_scores,
+                            "hard_scores": hard_scores
                             }
             chosen_caption_dataset.append(this_sample)
 
@@ -151,10 +160,7 @@ class Example_selection:
 
     def sample_inference(self, key):
         question, answers = self.question_dict[key], self.answer_dict[key]
-        
-        candidate_captions = [c for c in self.val_captions[key] if c != ""]
-        # filter out the repeated
-        candidate_captions = list(set(candidate_captions))
+        candidate_captions = self.val_captions[key]
 
         val_tag = self.tags_dict[int(key.split('<->')[0])]
 
@@ -171,7 +177,7 @@ class Example_selection:
             else:
                 context_key = context_key_list[ni]
             
-            this_caption = self.train_captions[context_key][0]
+            this_caption = self.train_captions[context_key][5]  # skip 5 coco captions
             this_tag = self.tags_dict[int(context_key.split('<->')[0])]
             this_question = self.train_question_dict[context_key]
             this_answer = answer_majority(self.train_answer_dict[context_key])
@@ -208,20 +214,20 @@ class Example_selection:
             gpt3_answer_scores.append(min(1., sum(sorted(this_answer_scores)[-3:])/3))
             hard_scores.append(min(1., count*0.3))
         
-        max_gpt3_answer_score = max(gpt3_answer_scores)
-        max_hard_score = max(hard_scores)
+        # max_gpt3_answer_score = max(gpt3_answer_scores)
+        # max_hard_score = max(hard_scores)
 
-        chosen_captions = []
+        # chosen_captions = []
 
-        for caption, caption_score in zip(candidate_captions, gpt3_answer_scores):
-            if caption_score == max_gpt3_answer_score:
-                chosen_captions.append(caption)
+        # for caption, caption_score in zip(candidate_captions, gpt3_answer_scores):
+        #     if caption_score == max_gpt3_answer_score:
+        #         chosen_captions.append(caption)
 
-        # sort the captions by length, only keep unique ones
-        chosen_captions = list(set(chosen_captions))
-        chosen_captions = sorted(chosen_captions, key=lambda x: len(x))
+        # # sort the captions by length, only keep unique ones
+        # chosen_captions = list(set(chosen_captions))
+        # chosen_captions = sorted(chosen_captions, key=lambda x: len(x))
         
-        return chosen_captions, max_gpt3_answer_score, max_hard_score
+        return candidate_captions, gpt3_answer_scores, hard_scores
 
 
     def get_context_keys(self,key,metric,n):
@@ -317,13 +323,13 @@ def main():
 
     chosen_caption_dataset = caption_selection.inference()
 
-    sample_count, total_soft_score, total_hard_score = 0, 0, 0
-    for sample in chosen_caption_dataset:
-        sample_count += 1
-        total_soft_score += sample["soft_score"]
-        total_hard_score += sample["hard_score"]
+    # sample_count, total_soft_score, total_hard_score = 0, 0, 0
+    # for sample in chosen_caption_dataset:
+    #     sample_count += 1
+    #     total_soft_score += sample["soft_score"]
+    #     total_hard_score += sample["hard_score"]
 
-    print(f"soft score: {total_soft_score/sample_count}   hard score: {total_hard_score/sample_count}")
+    # print(f"soft score: {total_soft_score/sample_count}   hard score: {total_hard_score/sample_count}")
 
     with open(args.output_fn, "w") as f:
         json.dump(chosen_caption_dataset, f, indent=4)
