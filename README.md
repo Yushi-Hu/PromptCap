@@ -15,13 +15,19 @@ and unzip to this directory
 
 
 For Zhengyuan:
-1. run the example selection on A-OKVQA
+1. run the example selection on OKVQA
+```
+cd example-filtering
+bash okvqa_example_selection.sh
+```
+
+2. run the example selection on A-OKVQA
 ```
 cd example-filtering
 bash aokvqa_example_selection.sh
 ```
 
-2. run the example selection on VQA2
+3. run the example selection on VQA2
 ```
 cd example-filtering
 bash vqa2_example_selection.sh
