@@ -38,7 +38,7 @@ def codex(prompt, top_p=1, temperature=0. , n=1):
     received = False
     while not received:
         try:
-            openai.api_keys = key_generator.get_key()
+            openai.api_key = key_generator.get_key()
             response = openai.Completion.create(
                 engine=engine, 
                 prompt=prompt,
@@ -240,7 +240,7 @@ def main():
     for batch in tqdm(batched_prompts):
         resp = codex(batch, temperature=0.0, n=1)
         batch_answer = [sample["text"] for sample in resp["choices"]]
-        batch_answer = batchify(batch_answer, 10)
+        # batch_answer = batchify(batch_answer, 19)
         answers += batch_answer
 
         # backup answers
@@ -258,7 +258,7 @@ def main():
         this_item["answer"] = get_one_answer(vqa_dataset[i], args.dataset)
         this_item['coco_captions'] = [it['caption'] for it in vqa_dataset[i]['caption']]
         # remove leading space
-        this_item['prompt_guided_captions'] = [a[1:] for a in answers[i]]
+        this_item['prompt_guided_captions'] = answers[i]
         new_vqa_dataset.append(this_item)
 
     with open(args.output, "w") as f:
