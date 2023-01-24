@@ -1,0 +1,5 @@
+transformers>=4.16.0
+numpy
+torch
+torchvision
+pillow

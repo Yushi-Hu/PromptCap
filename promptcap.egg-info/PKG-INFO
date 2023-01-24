@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: promptcap
+Version: 1.0.1
+Summary: Instruction-Guided Image Captioning
+Home-page: https://github.com/yushihu/PromptCap
+Author: Yushi Hu
+Author-email: yushihu@uw.edu
+License: MIT
+Keywords: image captioning,image-to-text,instruction,natural language processing,computer vision
+Description-Content-Type: text/markdown
+
+# PromptCap
+natual language guided image captioning

@@ -35,6 +35,10 @@ if is_torch_available():
         "OFAModel",
         "OFAPreTrainedModel",
     ]
+    _import_structure["promptcap"] = [
+        "PromptCap",
+        "PromptCap_VQA"
+    ]
 
 
 if TYPE_CHECKING:
@@ -49,6 +53,10 @@ if TYPE_CHECKING:
             OFA_PRETRAINED_MODEL_ARCHIVE_LIST,
             OFAModel,
             OFAPreTrainedModel,
+        )
+        from .promptcap import (
+            PromptCap,
+            PromptCap_VQA
         )
 
 else:

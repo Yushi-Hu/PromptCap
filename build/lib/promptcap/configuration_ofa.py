@@ -21,6 +21,7 @@ from transformers.utils import logging
 logger = logging.get_logger(__name__)
 
 OFA_PRETRAINED_CONFIG_ARCHIVE_MAP = {
+    "vqascore/promptcap-coco-vqa": "https://huggingface.co/vqascore/promptcap-coco-vqa/blob/main/config.json",
     "OFA-Sys/OFA-tiny": "https://huggingface.co/OFA-Sys/OFA-tiny/blob/main/config.json",
     "OFA-Sys/OFA-medium": "https://huggingface.co/OFA-Sys/OFA-medium/blob/main/config.json",
     "OFA-Sys/OFA-base": "https://huggingface.co/OFA-Sys/OFA-base/blob/main/config.json",
