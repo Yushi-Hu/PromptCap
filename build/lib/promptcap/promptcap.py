@@ -24,7 +24,7 @@ class PromptCap(nn.Module):
             transforms.Normalize(mean=mean, std=std)
         ])
         
-    def caption(self, prompt, image, num_beams=5, no_repeat_ngram_size=3, max_new_tokens=100):
+    def caption(self, prompt, image, num_beams=5, no_repeat_ngram_size=3, max_new_tokens=100, **generator_args):
         image = Image.open(image)
         image = self.patch_resize_transform(image)
         image = image.unsqueeze(0)
@@ -37,20 +37,21 @@ class PromptCap(nn.Module):
             gen = self.model.generate(prompt, patch_images=image, 
                                       num_beams=num_beams, 
                                       no_repeat_ngram_size=no_repeat_ngram_size, 
-                                      max_new_tokens=max_new_tokens)
+                                      max_new_tokens=max_new_tokens,
+                                      **generator_args)
             
         return (self.tokenizer.batch_decode(gen, skip_special_tokens=True)[0]).strip()
 
 class PromptCap_VQA(nn.Module):
     def __init__(self, promptcap_model="vqascore/promptcap-coco-vqa",
-                 vqa_model="allenai/unifiedqa-v2-t5-large-1251000"):
+                 qa_model="allenai/unifiedqa-v2-t5-large-1251000"):
         super().__init__()
         
         self.captioner = PromptCap(promptcap_model)
         
         # QA model
-        self.tokenizer = T5Tokenizer.from_pretrained(vqa_model)
-        self.model = T5ForConditionalGeneration.from_pretrained(vqa_model)
+        self.tokenizer = T5Tokenizer.from_pretrained(qa_model)
+        self.model = T5ForConditionalGeneration.from_pretrained(qa_model)
         self.model.eval()
         
     def run_model(self, input_string, max_new_tokens=50, **generator_args):
