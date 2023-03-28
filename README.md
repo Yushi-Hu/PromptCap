@@ -1,5 +1,5 @@
 # PromptCap
-Prompt-Guided Image Captioning
+This repository contains the code and models for our paper [PromptCap: Prompt-Guided Task-Aware Image Captioning](https://arxiv.org/abs/2211.09699). Please refer to the [project page](https://yushi-hu.github.io/promptcap_demo/) for a quick overview.
 
 
 # QuickStart
@@ -97,7 +97,7 @@ print(vqa_model.vqa_multiple_choice(question, image, choices))
 ## Bibtex
 ```
 @article{hu2022promptcap,
-  title={PromptCap: Prompt-Guided Image Captioning for VQA with GPT-3},
+  title={PromptCap: Prompt-Guided Task-Aware Image Captioning},
   author={Hu, Yushi and Hua, Hang and Yang, Zhengyuan and Shi, Weijia and Smith, Noah A and Luo, Jiebo},
   journal={arXiv preprint arXiv:2211.09699},
   year={2022}
