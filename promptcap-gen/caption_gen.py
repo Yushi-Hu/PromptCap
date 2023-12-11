@@ -8,7 +8,7 @@ import argparse
 
 
 # OpenAI completion
-openai.api_key = "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"
+openai.api_key = ""
 engine = "code-davinci-002"
 
 # add wrapper for error like throughput limitation
