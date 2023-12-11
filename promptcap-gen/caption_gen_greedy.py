@@ -10,12 +10,7 @@ import argparse
 # OpenAI completion
 engine = "code-davinci-002"
 
-api_keys = [#"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",
-            "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",
-            "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",
-            "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",
-            "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"]
-
+api_keys = []
 class KeyGen:
 
     def __init__(self) -> None:
