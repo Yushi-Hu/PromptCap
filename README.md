@@ -22,7 +22,7 @@ Generate a prompt-guided caption by following:
 import torch
 from promptcap import PromptCap
 
-model = PromptCap("vqascore/promptcap-coco-vqa")  # also support OFA checkpoints. e.g. "OFA-Sys/ofa-large"
+model = PromptCap("tifa-benchmark/promptcap-coco-vqa")  # also support OFA checkpoints. e.g. "OFA-Sys/ofa-large"
 
 if torch.cuda.is_available():
   model.cuda()
@@ -68,7 +68,7 @@ import torch
 from promptcap import PromptCap_VQA
 
 # QA model support all UnifiedQA variants. e.g. "allenai/unifiedqa-v2-t5-large-1251000"
-vqa_model = PromptCap_VQA(promptcap_model="vqascore/promptcap-coco-vqa", qa_model="allenai/unifiedqa-t5-base")
+vqa_model = PromptCap_VQA(promptcap_model="tifa-benchmark/promptcap-coco-vqa", qa_model="allenai/unifiedqa-t5-base")
 
 if torch.cuda.is_available():
   vqa_model.cuda()
