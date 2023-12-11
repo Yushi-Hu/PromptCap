@@ -2,11 +2,7 @@
 This repository contains the code and models for our paper [PromptCap: Prompt-Guided Task-Aware Image Captioning](https://arxiv.org/abs/2211.09699). Please refer to the [project page](https://yushi-hu.github.io/promptcap_demo/) for a quick overview. This paper is also accepted to ICCV 2023, with title [PromptCap: Prompt-Guided Image Captioning for VQA with GPT-3](https://openaccess.thecvf.com/content/ICCV2023/html/Hu_PromptCap_Prompt-Guided_Image_Captioning_for_VQA_with_GPT-3_ICCV_2023_paper.html).
 
 # Replicating results
-Since Codex has been deprecated, it is hard to replicate the results for PromptCap. For ease of use, we release all our logs, with the prompts we give to GPT-3 (codex), and the GPT-3's answers for each question, in `Evaluation Logs`
-
-Please refer to these logs for our prompting format and retrieved examples.
-
-Also, we release the training data synthesized by Codex in `vqa2_train_1010.zip`. To train PromptCap from OFA, first process the data according to [add a task](https://github.com/OFA-Sys/OFASys/blob/main/docs/source/howto/add_task.rst) and then fine-tune according to [how to train](https://github.com/OFA-Sys/OFASys/blob/main/docs/source/howto/train.rst). As the field is developing so quickly, we recommend train PromptCap with newer vision-language models, like BLIP-2 and LLaVA.
+Since Codex has been deprecated, it is hard to replicate the results for PromptCap. For ease of use, we release all our logs, with the prompts we give to GPT-3 (codex), and the GPT-3's answers for each question, in `Evaluation Logs`.
 
 # QuickStart
 
@@ -101,6 +97,19 @@ image = "glove_boy.jpeg"
 choices = ["gloves", "socks", "shoes", "coats"]
 print(vqa_model.vqa_multiple_choice(question, image, choices))
 ```
+
+# Reference codes for re-training PromptCap.
+We provide the original codes we use for PromptCap in `Original Codes`.
+Notice that this is not a runnable pipeline because codex and OpenAI text completion are deprecated, and the CLIP embeddings for the whole coco are too big.
+Nevertheless, it is still valuable for follow-up works to know the details of our implementation.
+
+1. Training data generation: refer to `Original Codes/promptcap-gen` on how we generate the prompt-guided caption training data with Codex.
+2. Training data filtering: refer to `Original Codes/example-filtering` on how we filter the training data.
+3. Training PromptCap with GPT-3 synthesized data:
+
+We release the training data synthesized by Codex in `vqa2_train_1010.zip`. To train PromptCap from OFA, first process the data according to [add a task](https://github.com/OFA-Sys/OFASys/blob/main/docs/source/howto/add_task.rst) and then fine-tune according to [how to train](https://github.com/OFA-Sys/OFASys/blob/main/docs/source/howto/train.rst). As the field is developing so quickly, we recommend train PromptCap with newer vision-language models, like BLIP-2 and LLaVA.
+
+4. Inference on GPT-3: the prompt logs are in `Evaluation Logs`. For construction of the prompts, refer to `Original Codes/GPT3-inference`.
 
 ## Bibtex
 ```
