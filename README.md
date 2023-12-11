@@ -1,6 +1,12 @@
 # PromptCap
-This repository contains the code and models for our paper [PromptCap: Prompt-Guided Task-Aware Image Captioning](https://arxiv.org/abs/2211.09699). Please refer to the [project page](https://yushi-hu.github.io/promptcap_demo/) for a quick overview.
+This repository contains the code and models for our paper [PromptCap: Prompt-Guided Task-Aware Image Captioning](https://arxiv.org/abs/2211.09699). Please refer to the [project page](https://yushi-hu.github.io/promptcap_demo/) for a quick overview. This paper is also accepted to ICCV 2023, with title [PromptCap: Prompt-Guided Image Captioning for VQA with GPT-3](https://openaccess.thecvf.com/content/ICCV2023/html/Hu_PromptCap_Prompt-Guided_Image_Captioning_for_VQA_with_GPT-3_ICCV_2023_paper.html).
 
+# Replicate results
+Since Codex has been deprecated, it is hard to duplicate the results for PromptCap. For ease of use, we release all our logs, with the prompt we give to GPT-3 (codex), and the GPT-3's answers,
+in `Evaluation Logs`
+Please reference these logs for our prompting format and retrieved examples.
+
+Also, we release the training data synthesized by Codex in `vqa2_train_1010.zip`.
 
 # QuickStart
 
@@ -55,6 +61,8 @@ print(model.caption(prompt, image, ocr))
 
 
 ## Visual Question Answering Pipeline
+
+Notice: This is not the pipeline we used for the paper, please reference to the `Replicating Results` section to get our GPT-3 result.
 
 Different from typical VQA models, which are doing classification on VQAv2, PromptCap is open-domain and can be paired with arbitrary text-QA models.
 Here we provide a pipeline for combining PromptCap with UnifiedQA.
