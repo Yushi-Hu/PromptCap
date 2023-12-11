@@ -4,9 +4,9 @@ This repository contains the code and models for our paper [PromptCap: Prompt-Gu
 # Replicating results
 Since Codex has been deprecated, it is hard to replicate the results for PromptCap. For ease of use, we release all our logs, with the prompts we give to GPT-3 (codex), and the GPT-3's answers for each question, in `Evaluation Logs`
 
-Please reference these logs for our prompting format and retrieved examples.
+Please refer to these logs for our prompting format and retrieved examples.
 
-Also, we release the training data synthesized by Codex in `vqa2_train_1010.zip`.
+Also, we release the training data synthesized by Codex in `vqa2_train_1010.zip`. To train PromptCap from OFA, first process the data according to [add a task](https://github.com/OFA-Sys/OFASys/blob/main/docs/source/howto/add_task.rst) and then fine-tune according to [how to train](https://github.com/OFA-Sys/OFASys/blob/main/docs/source/howto/train.rst). As the field is developing so quickly, we recommend train PromptCap with newer vision-language models, like BLIP-2 and LLaVA.
 
 # QuickStart
 
